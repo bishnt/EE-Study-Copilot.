@@ -1,0 +1,8 @@
+corpus/
+vectordb/
+.venv/
+*.pdf
+.env
+__pycache__/
+*.py[cod]
+.pytest_cache/

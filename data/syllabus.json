@@ -1,0 +1,124 @@
+[
+  {
+    "subject": "dsp",
+    "code": "ENEX 304",
+    "name": "Digital Signal Processing and Application",
+    "chapters": [
+      {"no": 1, "title": "Discrete Time Signals and Systems", "hours": 6, "marks": 8,
+       "topics": ["sampling and spectral properties", "discrete time signal types", "energy and power signals", "periodicity of discrete signals", "discrete time Fourier transform", "LTI system properties"]},
+      {"no": 2, "title": "Z-transform", "hours": 3, "marks": 4,
+       "topics": ["region of convergence", "z-transform properties", "inverse z-transform by long division", "partial fraction expansion"]},
+      {"no": 3, "title": "Analysis of LTI System in Frequency Domain", "hours": 5, "marks": 6,
+       "topics": ["frequency response of LTI system", "difference equation and system function", "pole-zero and frequency response", "linear phase and causality"]},
+      {"no": 4, "title": "Discrete Filter Structures", "hours": 6, "marks": 8,
+       "topics": ["FIR structures direct cascade lattice", "IIR direct form I and II", "cascade and lattice ladder structures", "limit cycles"]},
+      {"no": 5, "title": "FIR Filter Design", "hours": 9, "marks": 12,
+       "topics": ["window method", "rectangular Bartlett Hanning Hamming Blackman windows", "Kaiser window", "optimum approximation", "Remez exchange algorithm", "FIR types 1 to 4"]},
+      {"no": 6, "title": "IIR Filter Design", "hours": 9, "marks": 12,
+       "topics": ["impulse invariance method", "bilinear transformation", "digital low pass Butterworth filter", "frequency transformation of lowpass filters", "high-pass band-pass band-stop"]},
+      {"no": 7, "title": "Discrete Fourier Transform", "hours": 5, "marks": 10, "group": "7-8",
+       "topics": ["DFT representation and properties", "circular convolution", "FFT decimation in time", "FFT decimation in frequency", "computational complexity of FFT"]},
+      {"no": 8, "title": "Applications of Digital Signal Processing", "hours": 2, "marks": 0, "group": "7-8",
+       "topics": ["power system monitoring and diagnostics", "fault detection", "power quality analysis", "protection and control systems", "smart grid management", "reliability and maintenance"]}
+    ]
+  },
+  {
+    "subject": "dcs",
+    "code": "ENEE 304",
+    "name": "Digital Control System",
+    "chapters": [
+      {"no": 1, "title": "Introduction to Discrete Time Control System", "hours": 7, "marks": 8,
+       "topics": ["digital versus analog control", "sampling processes", "signal sampling quantizing and coding", "data acquisition and distribution", "sample and hold circuit", "quantization error"]},
+      {"no": 2, "title": "The Z Transform", "hours": 8, "marks": 12,
+       "topics": ["fundamentals of the Z-transform", "region of convergence", "Z-transform properties and theorems", "inverse Z-transform", "solving difference equations"]},
+      {"no": 3, "title": "Z-plane Analysis of Discrete-Time Control Systems", "hours": 8, "marks": 12,
+       "topics": ["impulse sampling and data hold", "reconstructing signals from samples", "pulse transfer function", "starred Laplace transform", "discrete time equivalents of continuous systems", "realization of digital controllers and filters"]},
+      {"no": 4, "title": "Stability, Design and Compensation of Discrete Time Control System", "hours": 13, "marks": 16,
+       "topics": ["S-plane to Z-plane mapping", "stability analysis in the Z-plane", "absolute stability tests", "transient and steady state response", "root locus and Bode plot design", "PID controller design", "phase lead and phase lag compensator"]},
+      {"no": 5, "title": "State Space Analysis", "hours": 9, "marks": 12,
+       "topics": ["state space method concept", "state-space representation of discrete systems", "state transition matrix", "pulse transfer function matrix", "discretization of state equations", "stability from discretized state space"]}
+    ]
+  },
+  {
+    "subject": "swp",
+    "code": "ENEE 305",
+    "name": "Switchgear and Protection",
+    "chapters": [
+      {"no": 1, "title": "Fundamental of Power System Protection", "hours": 4, "marks": 6,
+       "topics": ["need for protective schemes", "types causes and effects of faults", "zones of protection", "primary and backup protection", "essential qualities of protection"]},
+      {"no": 2, "title": "Fuses, Isolators, and Contactors", "hours": 8, "marks": 8,
+       "topics": ["fuse characteristics and fusing factor", "fuse selection and discrimination", "isolators construction and types", "contactors NO NC contacts", "contactor control circuits"]},
+      {"no": 3, "title": "Circuit Breakers", "hours": 14, "marks": 12,
+       "topics": ["arc extinction methods", "restriking and recovery voltage", "LV breakers MCB MCCB RCCB ACB", "HV breakers ABCB BOCB MOCB VCB SF6", "HVDC circuit breakers", "auto-reclosure", "testing of circuit breakers"]},
+      {"no": 4, "title": "Earthing and Protection Against Over Voltage", "hours": 6, "marks": 6,
+       "topics": ["system and body earthing", "earthing resistance and earth loop impedance", "overvoltage and lightning", "overhead earth wire and lightning arrestors", "neutral earthing", "Peterson coil earthing"]},
+      {"no": 5, "title": "Instrument Transformers for Protection", "hours": 4, "marks": 4,
+       "topics": ["current transformer construction and burden", "CT polarity and errors", "CT knee-point voltage", "potential transformer construction", "PT ratios and accuracy"]},
+      {"no": 6, "title": "Relay and Protection Schemes", "hours": 14, "marks": 14,
+       "topics": ["protective relay classification", "distance relay impedance reactance mho", "electromagnetic attraction and induction relays", "universal relay torque equation", "overcurrent and IDMT relays", "directional overcurrent relay", "differential and percentage differential protection", "earth fault protection"]},
+      {"no": 7, "title": "Static and Numerical Relays", "hours": 10, "marks": 10,
+       "topics": ["static versus electromagnetic relays", "comparator techniques", "static differential directional impedance mho relays", "numerical relay architecture", "analog input module and A/D conversion", "relaying algorithms"]}
+    ]
+  },
+  {
+    "subject": "emd",
+    "code": "ENEE 306",
+    "name": "Electric Machine Design",
+    "chapters": [
+      {"no": 1, "title": "Materials Used in Electrical Equipment", "hours": 5, "marks": 8,
+       "topics": ["conducting materials", "high conductivity and high resistivity materials", "magnetic materials classification", "laminated core and steel sheets", "insulating materials classification"]},
+      {"no": 2, "title": "Heating and Cooling of Machines", "hours": 7, "marks": 9,
+       "topics": ["internal temperature and hot spots", "temperature gradients in core and slots", "ventilation and cooling methods", "temperature rise and heating time constant", "cooling time constant", "rating based on temperature rise"]},
+      {"no": 3, "title": "Transformer Design", "hours": 14, "marks": 19,
+       "topics": ["output equation and volt per turn", "core sizing and flux density", "winding design and current density", "window and window space factor", "yoke and limb design", "resistance leakage reactance losses efficiency regulation", "tank and tubes cooling design"]},
+      {"no": 4, "title": "Three Phase Induction Motor Design", "hours": 10, "marks": 14,
+       "topics": ["stator winding types mush lap wave", "output equation and loading", "stator slots teeth and core", "air gap length", "rotor design squirrel cage and slip ring", "leakage inductance and equivalent circuit"]},
+      {"no": 5, "title": "DC Machine Design", "hours": 9, "marks": 10,
+       "topics": ["armature lap and wave winding", "output equation and gap density", "number of poles and pole proportions", "air gap length", "armature conductors coils and slots", "commutator brushes and field winding design"]}
+    ]
+  },
+  {
+    "subject": "tht",
+    "code": "ENME 310",
+    "name": "Engineering Thermodynamics and Heat Transfer",
+    "chapters": [
+      {"no": 1, "title": "Basic Concepts", "hours": 4, "marks": 10, "group": "1-2",
+       "topics": ["system surroundings and boundary", "intensive and extensive properties", "thermodynamic equilibrium and state", "reversible and irreversible process", "pressure and temperature measurement", "zeroth law"]},
+      {"no": 2, "title": "Energy and Energy Transfer", "hours": 3, "marks": 0, "group": "1-2",
+       "topics": ["stored and transient energy", "heat transfer", "work transfer", "displacement work", "electrical and mechanical work"]},
+      {"no": 3, "title": "Properties of Common Substances", "hours": 6, "marks": 8,
+       "topics": ["pure substance and state postulate", "ideal gas relations", "phase change diagrams", "quality and wet mixture", "compressibility factor", "property tables and P-h h-s T-s diagrams"]},
+      {"no": 4, "title": "First Law of Thermodynamics", "hours": 6, "marks": 8,
+       "topics": ["first law for control mass", "internal energy enthalpy specific heats", "first law for control volume", "steady state flow applications", "PMM-I"]},
+      {"no": 5, "title": "Second Law of Thermodynamics", "hours": 6, "marks": 8,
+       "topics": ["heat engine heat pump refrigerator", "Kelvin-Planck and Clausius statements", "Carnot cycle and efficiency", "Clausius inequality and entropy", "entropy change of ideal gases", "isentropic efficiency"]},
+      {"no": 6, "title": "Gas Power Cycles", "hours": 8, "marks": 16, "group": "6-7",
+       "topics": ["air standard assumptions", "Brayton cycle", "intercooling reheating regeneration", "Otto cycle", "Diesel cycle", "mean effective pressure", "diesel power plant"]},
+      {"no": 7, "title": "Vapor Power Cycles and Vapor Compression Refrigeration Cycles", "hours": 8, "marks": 0, "group": "6-7",
+       "topics": ["Rankine cycle", "reheat cycle", "regenerative cycle", "steam power plant layout", "vapor compression refrigeration cycle"]},
+      {"no": 8, "title": "Heat Transfer", "hours": 8, "marks": 10,
+       "topics": ["modes of heat transfer", "plane wall conduction", "hollow cylinder conduction", "composite wall and multilayer tubes", "critical radius of insulation", "thermal resistance analogy", "fins", "Stefan's law and radiation"]}
+    ]
+  },
+  {
+    "subject": "pe",
+    "code": "ENEE 302",
+    "name": "Power Electronics",
+    "chapters": [
+      {"no": 1, "title": "Introduction", "hours": 2, "marks": 4,
+       "topics": ["concept of power electronics", "applications", "advantages and disadvantages of converters", "power electronic system"]},
+      {"no": 2, "title": "Power Electronic Devices", "hours": 6, "marks": 6,
+       "topics": ["power diode and Shockley equation", "thyristor characteristics and commutation", "di/dt and dv/dt protection", "thyristor firing circuits", "TRIAC and GTO", "BJT and base drive", "MOSFET", "IGBT"]},
+      {"no": 3, "title": "Single Phase AC to DC Converters", "hours": 10, "marks": 12,
+       "topics": ["half wave uncontrolled rectifier", "full wave and bridge rectifier", "capacitor filter and ripple factor", "half wave controlled rectifier", "full converter resistive load", "full converter inductive load", "input power factor and THD", "extinction and symmetrical angle control"]},
+      {"no": 4, "title": "Three Phase AC to DC Converters", "hours": 6, "marks": 8,
+       "topics": ["three phase uncontrolled rectifier", "three phase controlled rectifier", "three phase full converter", "twelve pulse operation", "series connection of full converter"]},
+      {"no": 5, "title": "DC Chopper", "hours": 6, "marks": 10,
+       "topics": ["step down chopper resistive load", "step down chopper DC motor load", "step up chopper", "buck-boost converter", "bi-directional DC to DC converter", "chopper classification type A to E"]},
+      {"no": 6, "title": "Inverters", "hours": 10, "marks": 12,
+       "topics": ["single phase square wave inverter", "three phase inverter 180 and 120 degree conduction", "Fourier analysis of inverter output", "PWM single multiple sinusoidal", "current source inverter"]},
+      {"no": 7, "title": "AC Voltage Controller", "hours": 5, "marks": 8,
+       "topics": ["single phase AC voltage controller resistive load", "R-L load controller", "induction motor load controller", "three phase AC voltage controller", "cyclo-converter"]}
+    ]
+  }
+]
