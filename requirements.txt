@@ -10,3 +10,4 @@ tqdm
 requests
 scikit-learn
 pytest
+ocrmypdf>=17.13
