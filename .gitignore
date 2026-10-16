@@ -7,3 +7,7 @@ tmp_db/
 __pycache__/
 *.py[cod]
 .pytest_cache/
+vectordb_class/
+data/chunks*.jsonl
+eval/source/
+eval/report.json

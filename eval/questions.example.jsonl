@@ -1,0 +1,2 @@
+{"id": "dsp-ex1", "subject": "dsp", "question": "What is the region of convergence of a right-sided sequence?", "should_refuse": false, "gold": [{"source": "REPLACE_with_manifest_file.pdf", "page": 1}]}
+{"id": "out-ex1", "subject": null, "question": "Who won the Nepal premier league last year?", "should_refuse": true, "gold": []}
