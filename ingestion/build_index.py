@@ -8,8 +8,8 @@ from sentence_transformers import SentenceTransformer
 from ingestion.extract import extract_pages
 from ingestion.clean import find_boilerplate, clean_page
 from ingestion.chunk import make_chunks
+from app.config import MODEL_NAME
 
-MODEL_NAME = 'BAAI/bge-small-en-v1.5'
 CHAPTER_MIN_SIM = 0.45  # tune with the check in Procedure 2.3
 
 def chapter_vectors(model, syllabus):
@@ -44,7 +44,8 @@ def main(manifest='corpus/manifest.csv', db='vectordb',
         boiler = find_boilerplate([p[1] for p in pages])
         for num, text, tables in pages:
             chunks += make_chunks(r['file'], r['subject'], r['category'], num,
-                                  clean_page(text, boiler), tables)
+                                  clean_page(text, boiler), tables,
+                                  shareable=r['shareable'])
 
     for i in tqdm(range(0, len(chunks), batch), desc='embed'):
         part = chunks[i:i + batch]
