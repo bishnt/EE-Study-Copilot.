@@ -9,6 +9,7 @@ class Hit:
     bm25_score: float | None = None
     dense_sim: float | None = None  # cosine similarity in [-1, 1]
     score: float = 0.0              # final fused / reranked score
+    visual_score: float | None = None  # ColPali page score: mean MaxSim per query vector
 
     @property
     def source(self):

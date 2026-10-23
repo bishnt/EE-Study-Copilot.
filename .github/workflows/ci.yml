@@ -12,6 +12,6 @@ jobs:
         with:
           python-version: '3.12'
           cache: pip
-      # Tests are offline and need no model downloads, so install only the light deps.
-      - run: pip install pytest rank-bm25 numpy pandas langchain-text-splitters requests python-dotenv
+      # Tests are offline and need no model downloads (no torch, no ColPali), so install only the light deps.
+      - run: pip install pytest rank-bm25 numpy pandas langchain-text-splitters requests python-dotenv pymupdf pillow
       - run: python -m pytest -q

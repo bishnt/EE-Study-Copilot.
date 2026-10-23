@@ -6,6 +6,7 @@ import requests
 
 class LLM(Protocol):
     def complete(self, system: str, user: str, max_tokens: int = 1024) -> str: ...
+    # Vision-capable models also accept `images=[{'label', 'media_type', 'data'}]` (base64).
 
 
 class AnthropicLLM:
@@ -18,9 +19,21 @@ class AnthropicLLM:
             raise RuntimeError('Set ANTHROPIC_API_KEY (see .env.example)')
         self._http = session or requests
 
-    def complete(self, system, user, max_tokens=1024):
+    @staticmethod
+    def _content(user, images):
+        if not images:
+            return user
+        blocks = []
+        for im in images:  # each image is introduced by the cite tag the answer must use
+            blocks.append({'type': 'text', 'text': f"Page image for cite {im['label']}:"})
+            blocks.append({'type': 'image', 'source': {
+                'type': 'base64', 'media_type': im['media_type'], 'data': im['data']}})
+        blocks.append({'type': 'text', 'text': user})
+        return blocks
+
+    def complete(self, system, user, max_tokens=1024, images=None):
         body = {'model': self.model, 'max_tokens': max_tokens, 'system': system,
-                'messages': [{'role': 'user', 'content': user}]}
+                'messages': [{'role': 'user', 'content': self._content(user, images)}]}
         if self.temperature is not None:
             body['temperature'] = self.temperature
         r = self._http.post(
