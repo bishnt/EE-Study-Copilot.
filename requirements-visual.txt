@@ -1,0 +1,6 @@
+# Optional: ColPali visual page retrieval (see README, "Visual retrieval").
+# Everything in requirements.txt, plus the ColPali engine. colpali-engine pulls in torch,
+# torchvision, peft and transformers>=5.3 (compatible with sentence-transformers 6.x).
+# For an NVIDIA GPU, install the CUDA build of torch from pytorch.org first, then this file.
+-r requirements.txt
+colpali-engine>=0.3.18,<0.4

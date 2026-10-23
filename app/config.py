@@ -6,6 +6,7 @@ MODEL_NAME = 'BAAI/bge-small-en-v1.5'
 QUERY_PREFIX = 'Represent this sentence for searching relevant passages: '
 REFUSAL = 'I could not find this in the documents.'  # exact sentence, scope.md
 SUBJECTS = ('dsp', 'dcs', 'swp', 'emd', 'tht', 'pe')
+VISUAL_MODEL_NAME = 'vidore/colpali-v1.3'  # ColPali page-image retriever (retrieval/colpali_model.py)
 
 
 def _env(name, default, cast=str):
@@ -28,6 +29,16 @@ class Config:
     max_context_chars: int = 9000
     llm_model: str = 'claude-sonnet-5-5'
     require_shareable: bool = True  # never send shareable=no text to the API
+    # Visual retrieval (ColPali). Off by default; see README "Visual retrieval".
+    visual_enabled: bool = False
+    visual_model: str = VISUAL_MODEL_NAME
+    visual_dir: str = 'vectordb_visual_class'  # mirrors db_path='vectordb_class'
+    corpus_dir: str = 'corpus'      # page images are re-rendered from here at answer time
+    visual_pool: int = 10           # page candidates taken from ColPali before fusion
+    # Evidence gate for visual hits: mean MaxSim per query vector. Starting value only:
+    # calibrate with `python -m eval.run_eval` like min_dense_sim.
+    min_visual: float = 0.50
+    max_images: int = 3             # page images attached to one API call
 
     @classmethod
     def from_env(cls):
@@ -41,4 +52,12 @@ class Config:
             min_dense_sim=_env('COPILOT_MIN_DENSE', d.min_dense_sim, float),
             min_bm25=_env('COPILOT_MIN_BM25', d.min_bm25, float),
             llm_model=_env('COPILOT_MODEL', d.llm_model),
+            visual_enabled=_env('COPILOT_VISUAL', d.visual_enabled,
+                                lambda v: v.strip().lower() in ('1', 'true', 'yes', 'on')),
+            visual_model=_env('COPILOT_VISUAL_MODEL', d.visual_model),
+            visual_dir=_env('COPILOT_VISUAL_DIR', d.visual_dir),
+            corpus_dir=_env('COPILOT_CORPUS', d.corpus_dir),
+            visual_pool=_env('COPILOT_VISUAL_POOL', d.visual_pool, int),
+            min_visual=_env('COPILOT_MIN_VISUAL', d.min_visual, float),
+            max_images=_env('COPILOT_MAX_IMAGES', d.max_images, int),
         )

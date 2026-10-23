@@ -36,10 +36,12 @@ class FakeDense:
 
 class FakeLLM:
     def __init__(self, *replies):
-        self.replies, self.calls = list(replies), []
+        self.replies, self.calls, self.systems, self.images = list(replies), [], [], []
 
-    def complete(self, system, user, max_tokens=1024):
+    def complete(self, system, user, max_tokens=1024, images=None):
         self.calls.append(user)
+        self.systems.append(system)
+        self.images.append(images)
         return self.replies.pop(0)
 
 
