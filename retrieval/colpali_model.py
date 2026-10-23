@@ -3,6 +3,9 @@
 torch and colpali_engine are imported inside the functions, so tests, CI and BM25-only
 use never need them. Install them with: pip install -r requirements-visual.txt
 """
+import json
+from pathlib import Path
+
 import numpy as np
 
 # (substring of the model id, model class, processor class). Order matters:
@@ -27,8 +30,32 @@ def model_family(model_name):
         + ', '.join(k for k, _, _ in _FAMILIES))
 
 
-def load(model_name, device=None):
-    """Load (model, processor). Weights download from Hugging Face on first use."""
+def model_tag(model_name, adapter=None):
+    """Identity of the embedding space: the index records it and refuses a different one.
+
+    A LoRA adapter changes every embedding, so base-model vectors and adapter vectors must never
+    be compared. Adapters written by training.train_colpali carry a run_id in copilot_meta.json;
+    otherwise the directory name is used.
+    """
+    if not adapter:
+        return model_name
+    meta = Path(adapter) / 'copilot_meta.json'
+    run = Path(adapter).name
+    if meta.is_file():
+        try:
+            run = json.loads(meta.read_text()).get('run_id') or run
+        except ValueError:
+            pass
+    return f'{model_name}+lora:{run}'
+
+
+def load(model_name, device=None, adapter=None, trainable=False):
+    """Load (model, processor). Weights download from Hugging Face on first use.
+
+    adapter: directory of a LoRA adapter from training.train_colpali. For inference it is merged
+    into the base weights (fast); with trainable=True it stays a trainable PEFT model so training
+    can resume, and the model is left in train mode.
+    """
     import torch
     from colpali_engine import models
     from colpali_engine.utils.torch_utils import get_torch_device
@@ -37,7 +64,13 @@ def load(model_name, device=None):
     device = device or get_torch_device('auto')
     dtype = torch.float32 if str(device).startswith('cpu') else torch.bfloat16
     model = getattr(models, model_cls).from_pretrained(
-        model_name, torch_dtype=dtype, device_map=device).eval()
+        model_name, torch_dtype=dtype, device_map=device)
+    if adapter:
+        from peft import PeftModel  # lazy: only needed with an adapter
+        model = PeftModel.from_pretrained(model, str(adapter), is_trainable=trainable)
+        if not trainable:
+            model = model.merge_and_unload()
+    model = model if trainable else model.eval()
     processor = getattr(models, proc_cls).from_pretrained(model_name)
     return model, processor
 

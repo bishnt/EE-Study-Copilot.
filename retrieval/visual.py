@@ -91,10 +91,11 @@ class VisualIndex:
     @classmethod
     def from_config(cls, cfg):
         from retrieval import colpali_model  # lazy: pulls in torch
-        model, processor = colpali_model.load(cfg.visual_model)
+        adapter = cfg.visual_adapter or None
+        model, processor = colpali_model.load(cfg.visual_model, adapter=adapter)
         return cls.from_dir(cfg.visual_dir,
                             lambda q: colpali_model.embed_query(model, processor, q),
-                            expected_model=cfg.visual_model)
+                            expected_model=colpali_model.model_tag(cfg.visual_model, adapter))
 
     def _maxsim(self, q, idx):
         """Mean-MaxSim of query vectors `q` (n, dim) against pages `idx`; returns (len(idx),)."""

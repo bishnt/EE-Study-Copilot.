@@ -13,3 +13,6 @@ vectordb_visual_class/
 data/chunks*.jsonl
 eval/source/
 eval/report.json
+train/
+adapters/
+eval/retrieval_report*.json

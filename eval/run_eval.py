@@ -31,6 +31,8 @@ def run(questions, retriever, llm, router, cfg, judge=True):
                              if judge and not a.refused else None),
             'top_dense': max((h.dense_sim for h in a.hits if h.dense_sim is not None), default=None),
             'top_bm25': max((h.bm25_score for h in a.hits if h.bm25_score is not None), default=None),
+            'top_visual': max((h.visual_score for h in a.hits if h.visual_score is not None),
+                              default=None),
         })
     return rows
 
