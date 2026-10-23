@@ -161,3 +161,40 @@ def test_end_to_end_build_search_render_answer(corpus, tmp_path):
     (image,) = llm.images[0]
     assert image['label'] == '[notes.pdf, 2]'
     assert base64.b64decode(image['data'])[:4] == b'\x89PNG'
+
+
+# ---- adapters: a fine-tuned model must never share an index with the base model --------------------------
+
+def test_model_tag_identifies_model_and_adapter(tmp_path):
+    from retrieval.colpali_model import model_tag
+    assert model_tag('vidore/colpali-v1.3') == 'vidore/colpali-v1.3'
+    adapter = tmp_path / 'ee-colpali'
+    adapter.mkdir()
+    assert model_tag('m', adapter) == 'm+lora:ee-colpali'              # falls back to the dir name
+    (adapter / 'copilot_meta.json').write_text('{"run_id": "20261101-abc123"}')
+    assert model_tag('m', adapter) == 'm+lora:20261101-abc123'         # retraining changes the tag
+    (adapter / 'copilot_meta.json').write_text('{broken')
+    assert model_tag('m', adapter) == 'm+lora:ee-colpali'
+
+
+def test_adapter_build_records_tag_and_does_not_reuse_base_shards(corpus, tmp_path):
+    out, emb = tmp_path / 'vis', CountingEmbedder()
+    adapter = tmp_path / 'ad'
+    adapter.mkdir()
+    run(corpus, out, emb)                                              # base model
+    assert emb.pages == 3
+    run(corpus, out, emb, adapter=str(adapter))                        # same model + adapter
+    assert emb.pages == 6                                              # base shards not reused
+    assert read_index(out)[3]['model'] == 'vidore/colpali-v1.3+lora:ad'
+
+
+def test_index_built_with_base_model_is_refused_for_an_adapter(corpus, tmp_path):
+    from retrieval.colpali_model import model_tag
+    from retrieval.visual import VisualIndex
+    out = tmp_path / 'vis'
+    run(corpus, out, CountingEmbedder())
+    adapter = tmp_path / 'ad'
+    adapter.mkdir()
+    tag = model_tag('vidore/colpali-v1.3', adapter)
+    with pytest.raises(ValueError, match='rebuild'):
+        VisualIndex.from_dir(out, lambda q: np.ones((1, DIM), np.float32), expected_model=tag)

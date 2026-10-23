@@ -20,6 +20,7 @@ import pandas as pd
 
 from app.config import VISUAL_MODEL_NAME
 from ingestion.render import iter_pages
+from retrieval.colpali_model import model_tag
 from retrieval.visual import MAX_TEXT_CHARS, page_id, write_index
 
 
@@ -53,9 +54,9 @@ def _load_shard(path, subject, file, model):
         return None  # corrupt shard: re-embed
 
 
-def _default_embedder(model_name, batch_size):
+def _default_embedder(model_name, adapter, batch_size):
     from retrieval import colpali_model  # lazy: pulls in torch
-    model, processor = colpali_model.load(model_name)
+    model, processor = colpali_model.load(model_name, adapter=adapter)
     return lambda images: colpali_model.embed_images(model, processor, images, batch_size)
 
 
@@ -82,7 +83,7 @@ def _embed_document(pdf, embed, batch_size, max_side):
 
 def build(manifest='corpus/manifest.csv', corpus='corpus', out='vectordb_visual',
           shareable_only=False, model_name=VISUAL_MODEL_NAME, batch_size=2, max_side=1024,
-          subjects=None, embedder=None, log=print):
+          subjects=None, embedder=None, log=print, adapter=None):
     """Embed every selected document, then write the index. `embedder(images) -> vectors` is
     injectable so tests can run without torch."""
     df = pd.read_csv(manifest)
@@ -99,18 +100,19 @@ def build(manifest='corpus/manifest.csv', corpus='corpus', out='vectordb_visual'
         raise SystemExit('Missing PDFs (run python -m ingestion.validate_corpus):\n'
                          + '\n'.join(missing))
 
+    tag = model_tag(model_name, adapter)   # shards and the index are tied to model + adapter
     embed = embedder
     all_pages, all_vectors = [], []
     for _, r in df.iterrows():
         subject, file = r['subject'], r['file']
         shard = _shard_path(out, subject, file)
-        got = _load_shard(shard, subject, file, model_name)
+        got = _load_shard(shard, subject, file, tag)
         if got is None:
             if embed is None:  # load the model only when something actually needs embedding
-                embed = _default_embedder(model_name, batch_size)
+                embed = _default_embedder(model_name, adapter, batch_size)
             log(f'embedding {subject}/{file}')
             got = _embed_document(Path(corpus) / subject / file, embed, batch_size, max_side)
-            _save_shard(shard, subject, file, model_name, *got)
+            _save_shard(shard, subject, file, tag, *got)
         else:
             log(f'cached    {subject}/{file}')
         nums, texts, vectors = got
@@ -120,7 +122,7 @@ def build(manifest='corpus/manifest.csv', corpus='corpus', out='vectordb_visual'
                               'shareable': str(r['shareable']), 'text': text})
             all_vectors.append(vec)
 
-    write_index(out, all_pages, all_vectors, model_name)
+    write_index(out, all_pages, all_vectors, tag)
     log(f'visual index: {len(all_pages)} pages from {len(df)} documents -> {out}')
     return len(all_pages)
 
@@ -137,6 +139,8 @@ def main(argv=None):
                          f'(default {cfg.visual_dir})')
     ap.add_argument('--out', help='output directory (default: class index dir, or vectordb_visual)')
     ap.add_argument('--model', default=cfg.visual_model)
+    ap.add_argument('--adapter', default=cfg.visual_adapter or None,
+                    help='LoRA adapter dir from training.train_colpali (default COPILOT_VISUAL_ADAPTER)')
     ap.add_argument('--subject', action='append', help='limit to a subject (repeatable)')
     ap.add_argument('--batch-size', type=int, default=2, help='pages per forward pass')
     ap.add_argument('--max-side', type=int, default=1024, help='page image longest side, px')
@@ -144,7 +148,7 @@ def main(argv=None):
     args = ap.parse_args(argv)
     out = args.out or (cfg.visual_dir if args.class_mode else 'vectordb_visual')
     build(args.manifest, cfg.corpus_dir, out, args.class_mode, args.model, args.batch_size,
-          args.max_side, args.subject)
+          args.max_side, args.subject, adapter=args.adapter)
 
 
 if __name__ == '__main__':

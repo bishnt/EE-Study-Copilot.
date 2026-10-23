@@ -32,6 +32,7 @@ class Config:
     # Visual retrieval (ColPali). Off by default; see README "Visual retrieval".
     visual_enabled: bool = False
     visual_model: str = VISUAL_MODEL_NAME
+    visual_adapter: str = ''        # optional LoRA adapter dir from training.train_colpali
     visual_dir: str = 'vectordb_visual_class'  # mirrors db_path='vectordb_class'
     corpus_dir: str = 'corpus'      # page images are re-rendered from here at answer time
     visual_pool: int = 10           # page candidates taken from ColPali before fusion
@@ -55,6 +56,7 @@ class Config:
             visual_enabled=_env('COPILOT_VISUAL', d.visual_enabled,
                                 lambda v: v.strip().lower() in ('1', 'true', 'yes', 'on')),
             visual_model=_env('COPILOT_VISUAL_MODEL', d.visual_model),
+            visual_adapter=_env('COPILOT_VISUAL_ADAPTER', d.visual_adapter),
             visual_dir=_env('COPILOT_VISUAL_DIR', d.visual_dir),
             corpus_dir=_env('COPILOT_CORPUS', d.corpus_dir),
             visual_pool=_env('COPILOT_VISUAL_POOL', d.visual_pool, int),
